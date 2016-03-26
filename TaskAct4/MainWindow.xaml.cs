@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaskAct4.ViewModel;
 
 namespace TaskAct4
 {
@@ -19,10 +20,11 @@ namespace TaskAct4
     /// MainWindow.xaml の相互作用ロジック
     /// </summary>
     public partial class MainWindow : Window
-    {
+    {        
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = new MainWindowViewModel();            
         }
     }
 }

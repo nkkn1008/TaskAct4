@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace TaskAct4.Core
 {
-    public class Task
+    public class MyTask
     {
         private string _Name;
-        Task(string Name)
+        MyTask(string Name)
         {
             _Name = Name;
         }      
