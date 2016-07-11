@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ReactiveUI;
 using System.Reactive.Linq;
 using System.Reactive;
+using System.Windows;
 
 namespace TaskAct4.ViewModel
 {
@@ -17,6 +18,7 @@ namespace TaskAct4.ViewModel
             get { return _TaskName; }
             set { this.RaiseAndSetIfChanged(ref _TaskName, value); }
         }
+        public ReactiveCommand<object> AddCommand { get; protected set; }
 
         public MainWindowViewModel()
         {
@@ -25,6 +27,17 @@ namespace TaskAct4.ViewModel
                 .Where(x=> !String.IsNullOrEmpty(x))
                 .Select(_ => DisplayTaskName())
                 .Subscribe();
+
+            var canAdd = this.WhenAny(x => x.TaskName, x => !String.IsNullOrWhiteSpace(x.Value));
+            //var AddCommand = ReactiveCommand.CreateAsyncTask(canAdd, x => doSthAsync(x));
+            //AddCommand = ReactiveCommand.Create(canAdd, x => doSthAsync(x));
+            AddCommand = ReactiveCommand.Create(this.WhenAny(x => x.TaskName, x => !string.IsNullOrEmpty(x.Value)));
+            AddCommand.Subscribe(_ => MessageBox.Show("You clicked on DisplayCommand: Name is " + TaskName));
+        }
+
+        private Task doSthAsync(object parameter)
+        {
+            return Task.FromResult(true);
         }
 
         private string _TaskNameView;
@@ -37,5 +50,7 @@ namespace TaskAct4.ViewModel
         {
             TaskNameView = TaskName;
         }
+
+        
     }
 }
