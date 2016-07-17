@@ -8,8 +8,9 @@
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <Button x:Name="button_AddTask" Content="Add Task" Command="{Binding AddCommand}" HorizontalAlignment="Left" Margin="238,222,0,0" VerticalAlignment="Top" Width="75"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="216,86,0,0" TextWrapping="Wrap" Text="{Binding TaskName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" />
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="216,86,0,0" TextWrapping="Wrap" Text="{Binding TicketName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" />
         <Label x:Name="label" Content="{Binding TaskNameView}" HorizontalAlignment="Left" Margin="278,138,0,0" VerticalAlignment="Top"/>
+        <ListBox x:Name="Tickets" HorizontalAlignment="Left" Height="220" Margin="67,49,0,0" VerticalAlignment="Top" Width="100" ItemsSource="{Binding Tickets}"/>
 
     </Grid>
 </Window>

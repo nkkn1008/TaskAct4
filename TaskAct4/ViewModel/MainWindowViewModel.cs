@@ -7,37 +7,33 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using System.Reactive;
 using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace TaskAct4.ViewModel
 {
     class MainWindowViewModel : ReactiveObject
     {
-        private string _TaskName;
-        public string TaskName
+        private string _TicketName;
+        public string TicketName
         {
-            get { return _TaskName; }
-            set { this.RaiseAndSetIfChanged(ref _TaskName, value); }
+            get { return _TicketName; }
+            set { this.RaiseAndSetIfChanged(ref _TicketName, value); }
         }
         public ReactiveCommand<object> AddCommand { get; protected set; }
 
         public MainWindowViewModel()
         {
-            this.WhenAnyValue(x => x.TaskName)
-                .Throttle(TimeSpan.FromMilliseconds(800), RxApp.MainThreadScheduler)
+            this.WhenAnyValue(x => x.TicketName)
+                .Throttle(TimeSpan.FromMilliseconds(400), RxApp.MainThreadScheduler)
                 .Where(x=> !String.IsNullOrEmpty(x))
                 .Select(_ => DisplayTaskName())
                 .Subscribe();
+            Tickets = new ObservableCollection<string>();
+            var canAdd = this.WhenAny(x => x.TicketName, x => !String.IsNullOrWhiteSpace(x.Value));
 
-            var canAdd = this.WhenAny(x => x.TaskName, x => !String.IsNullOrWhiteSpace(x.Value));
-            //var AddCommand = ReactiveCommand.CreateAsyncTask(canAdd, x => doSthAsync(x));
-            //AddCommand = ReactiveCommand.Create(canAdd, x => doSthAsync(x));
-            AddCommand = ReactiveCommand.Create(this.WhenAny(x => x.TaskName, x => !string.IsNullOrEmpty(x.Value)));
-            AddCommand.Subscribe(_ => MessageBox.Show("You clicked on DisplayCommand: Name is " + TaskName));
-        }
+            AddCommand = ReactiveCommand.Create(this.WhenAny(x => x.TicketName, x => !string.IsNullOrEmpty(x.Value)));
+            AddCommand.Subscribe(_=>Tickets.Add(TicketName));           
 
-        private Task doSthAsync(object parameter)
-        {
-            return Task.FromResult(true);
         }
 
         private string _TaskNameView;
@@ -48,9 +44,13 @@ namespace TaskAct4.ViewModel
         }
         public async Task DisplayTaskName()
         {
-            TaskNameView = TaskName;
+            TaskNameView = TicketName;
         }
 
-        
+        public ObservableCollection<string> Tickets
+        {
+            get; private set;
+        }
+
     }
 }
