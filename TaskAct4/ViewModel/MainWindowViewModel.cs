@@ -30,8 +30,8 @@ namespace TaskAct4.ViewModel
                 .Subscribe();
             Tickets = new ObservableCollection<string>();
             var canAdd = this.WhenAny(x => x.TicketName, x => !String.IsNullOrWhiteSpace(x.Value));
-
-            AddCommand = ReactiveCommand.Create(this.WhenAny(x => x.TicketName, x => !string.IsNullOrEmpty(x.Value)));
+            
+            AddCommand = ReactiveCommand.Create(canAdd);
             AddCommand.Subscribe(_=>Tickets.Add(TicketName));           
 
         }
